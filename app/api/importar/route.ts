@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
 
 export async function POST(request: NextRequest) {
   const { solicitud: s, vehiculo: v, repuestos = [] } = await request.json()
 
-  const supabase = await createClient()
+  const supabase = createServiceClient()
 
   const fechaRaw: string = s.fecha_solicitud ?? ''
   let fecha_solicitud: string | null = null
