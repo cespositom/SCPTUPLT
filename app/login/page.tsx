@@ -22,7 +22,7 @@ export default function LoginPage() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
 
     if (error) {
-      setError('Credenciales incorrectas')
+      setError(error.message)
       setLoading(false)
       return
     }
