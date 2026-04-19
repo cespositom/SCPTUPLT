@@ -54,9 +54,9 @@ export default function UploadPage() {
         setState('error')
         setResult({ mensaje_error: data.mensaje || 'Error al procesar el PDF' })
       }
-    } catch {
+    } catch (err) {
       setState('error')
-      setResult({ mensaje_error: 'No se pudo conectar con el servidor' })
+      setResult({ mensaje_error: err instanceof Error ? err.message : 'Error de red' })
     }
   }
 
