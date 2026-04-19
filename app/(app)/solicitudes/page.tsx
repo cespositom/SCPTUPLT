@@ -24,12 +24,20 @@ export default async function SolicitudesPage() {
           <h1 className="text-2xl font-bold text-gray-900">Solicitudes</h1>
           <p className="text-sm text-gray-500 mt-0.5">{solicitudes?.length ?? 0} solicitudes registradas</p>
         </div>
-        <Link
-          href="/solicitudes/upload"
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
-        >
-          + Cargar PDF
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href="/solicitudes/importar"
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 transition-colors"
+          >
+            + Importar JSON
+          </Link>
+          <Link
+            href="/solicitudes/upload"
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+          >
+            + Cargar PDF
+          </Link>
+        </div>
       </div>
 
       {!solicitudes?.length ? (
