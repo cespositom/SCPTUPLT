@@ -37,7 +37,7 @@ export default function UploadPage() {
     formData.append('data', file, file.name)
 
     try {
-      const res = await fetch(process.env.NEXT_PUBLIC_N8N_WEBHOOK_URL!, {
+      const res = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       })
