@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import RepuestosTable from '@/components/RepuestosTable'
+import DeleteSolicitud from '@/components/DeleteSolicitud'
 
 const ESTADOS: Record<string, { label: string; color: string }> = {
   pendiente:  { label: 'Pendiente',  color: 'bg-yellow-100 text-yellow-800' },
@@ -32,10 +33,13 @@ export default async function SolicitudDetallePage({ params }: { params: Promise
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="flex items-center gap-3 mb-6">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
         <Link href="/solicitudes" className="text-sm text-gray-500 hover:text-gray-700">← Solicitudes</Link>
         <span className="text-gray-300">/</span>
-        <span className="text-sm font-mono font-medium text-gray-700">#{s.n_solicitud}</span>
+          <span className="text-sm font-mono font-medium text-gray-700">#{s.n_solicitud}</span>
+        </div>
+        <DeleteSolicitud id={s.id} />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
