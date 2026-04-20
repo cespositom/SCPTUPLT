@@ -47,7 +47,6 @@ export default async function SolicitudesPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Patente</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Región</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Fecha</th>
-                <th className="text-left px-4 py-3 font-medium text-gray-600">Estado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -65,11 +64,6 @@ export default async function SolicitudesPage() {
                     <td className="px-4 py-3 text-gray-600">{s.region_taller}</td>
                     <td className="px-4 py-3 text-gray-500">
                       {s.fecha_solicitud ? new Date(s.fecha_solicitud).toLocaleDateString('es-CL') : '—'}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${estado.color}`}>
-                        {estado.label}
-                      </span>
                     </td>
                   </tr>
                 )
