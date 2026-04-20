@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
 
 export default function DeleteSolicitud({ id }: { id: string }) {
   const [confirming, setConfirming] = useState(false)
@@ -11,8 +10,7 @@ export default function DeleteSolicitud({ id }: { id: string }) {
 
   async function handleDelete() {
     setLoading(true)
-    const supabase = createClient()
-    await supabase.from('solicitudes').delete().eq('id', id)
+    await fetch(`/api/solicitudes/${id}`, { method: 'DELETE' })
     router.push('/solicitudes')
     router.refresh()
   }
