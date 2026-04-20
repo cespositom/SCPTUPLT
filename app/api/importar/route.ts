@@ -4,6 +4,8 @@ import { createServiceClient } from '@/lib/supabase/server'
 export async function POST(request: NextRequest) {
   const { solicitud: s, vehiculo: v, repuestos = [] } = await request.json()
 
+  if (!s.nro_solicitud) return NextResponse.json({ error: 'El campo nro_solicitud es requerido' }, { status: 400 })
+
   const supabase = createServiceClient()
 
   const fechaRaw: string = s.fecha_solicitud ?? ''
