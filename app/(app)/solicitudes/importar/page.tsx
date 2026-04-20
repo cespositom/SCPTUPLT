@@ -98,7 +98,7 @@ export default function ImportarPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+          {repuestos.length > 0 && <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="px-5 py-3 border-b border-gray-100">
               <h2 className="text-sm font-semibold text-gray-700">Repuestos ({repuestos.length})</h2>
             </div>
@@ -122,7 +122,7 @@ export default function ImportarPage() {
                 ))}
               </tbody>
             </table>
-          </div>
+          </div>}
 
           <div className="flex gap-3">
             <button
