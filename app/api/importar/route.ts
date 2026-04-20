@@ -8,11 +8,11 @@ export async function POST(request: NextRequest) {
 
   const supabase = createServiceClient()
 
-  const fechaRaw: string = s.fecha_solicitud ?? ''
+  const fechaRaw: string = s.fecha_solicitud ?? s.fecha ?? ''
   let fecha_solicitud: string | null = null
   if (fechaRaw) {
     const [d, m, y] = fechaRaw.split('/')
-    fecha_solicitud = `${y}-${m}-${d}`
+    if (d && m && y) fecha_solicitud = `${y}-${m}-${d}`
   }
 
   const { data: sol, error: solErr } = await supabase
@@ -23,10 +23,10 @@ export async function POST(request: NextRequest) {
       tipo_vehiculo: v.tipo,
       marca:         v.marca,
       modelo:        v.modelo,
-      anio:          v.año,
+      anio:          Number(v.año ?? v.ano),
       vin:           v.vin,
       patente:       v.patente,
-      region_taller: s.region_taller,
+      region_taller: s.region_taller ?? s.region ?? s.zona_taller,
       liquidador:    s.liquidador,
       fecha_solicitud,
       tipo_compra:   s.tipo_compra,
@@ -42,11 +42,14 @@ export async function POST(request: NextRequest) {
     const rows = repuestos.map((r: any, i: number) => ({
       solicitud_id:    sol.id,
       numero_item:     i + 1,
-      nombre_es:       r.nombre_es,
-      nombre_en:       r.nombre_en,
-      codigo_original: r.codigo_oem,
+      nombre_es:       r.nombre_es ?? r.nombre ?? null,
+      nombre_en:       r.nombre_en ?? null,
+      codigo_original: r.codigo_oem ?? r.codigo_original ?? r.codigo ?? null,
+      n_parte:         r.n_parte ?? r.nro_parte ?? null,
+      proveedor:       r.proveedor ?? r.fuente ?? null,
     }))
-    await supabase.from('repuestos').insert(rows)
+    const { error: repErr } = await supabase.from('repuestos').insert(rows)
+    if (repErr) return NextResponse.json({ error: repErr.message }, { status: 400 })
   }
 
   return NextResponse.json({ id: sol.id })
