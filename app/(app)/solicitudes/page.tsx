@@ -18,6 +18,14 @@ export default async function SolicitudesPage() {
     .order('created_at', { ascending: false })
     .limit(100)
 
+  const ids = solicitudes?.map(s => s.id) ?? []
+  const { data: codigos } = ids.length
+    ? await supabase.from('repuestos').select('solicitud_id').not('codigo_original', 'is', null).in('solicitud_id', ids)
+    : { data: [] }
+
+  const codigosCount: Record<string, number> = {}
+  codigos?.forEach(r => { codigosCount[r.solicitud_id] = (codigosCount[r.solicitud_id] || 0) + 1 })
+
   return (
     <div className="max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-6">
@@ -48,6 +56,7 @@ export default async function SolicitudesPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Patente</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Región</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Fecha</th>
+                <th className="text-center px-4 py-3 font-medium text-gray-600">Cód. Originales</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Gestionado</th>
               </tr>
             </thead>
@@ -65,6 +74,9 @@ export default async function SolicitudesPage() {
                     <td className="px-4 py-3 text-gray-600">{s.region_taller}</td>
                     <td className="px-4 py-3 text-gray-500">
                       {s.fecha_solicitud ? new Date(s.fecha_solicitud).toLocaleDateString('es-CL') : '—'}
+                    </td>
+                    <td className="px-4 py-3 text-center text-gray-700 font-medium">
+                      {codigosCount[s.id] ?? 0}
                     </td>
                     <td className="px-4 py-3">
                       <GestionadoToggle id={s.id} value={s.gestionado ?? false} />
