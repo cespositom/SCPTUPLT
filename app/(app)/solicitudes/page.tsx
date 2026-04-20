@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
+import GestionadoToggle from '@/components/GestionadoToggle'
 
 const ESTADOS: Record<string, { label: string; color: string }> = {
   pendiente:   { label: 'Pendiente',   color: 'bg-yellow-100 text-yellow-800' },
@@ -13,7 +14,7 @@ export default async function SolicitudesPage() {
 
   const { data: solicitudes } = await supabase
     .from('solicitudes')
-    .select('id, n_solicitud, marca, modelo, anio, patente, region_taller, estado, fecha_solicitud, created_at')
+    .select('id, n_solicitud, marca, modelo, anio, patente, region_taller, fecha_solicitud, gestionado, created_at')
     .order('created_at', { ascending: false })
     .limit(100)
 
@@ -47,11 +48,11 @@ export default async function SolicitudesPage() {
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Patente</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Región</th>
                 <th className="text-left px-4 py-3 font-medium text-gray-600">Fecha</th>
+                <th className="text-left px-4 py-3 font-medium text-gray-600">Gestionado</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
               {solicitudes.map(s => {
-                const estado = ESTADOS[s.estado] ?? { label: s.estado, color: 'bg-gray-100 text-gray-700' }
                 return (
                   <tr key={s.id} className="hover:bg-gray-50 transition-colors cursor-pointer">
                     <td className="px-4 py-3">
@@ -64,6 +65,9 @@ export default async function SolicitudesPage() {
                     <td className="px-4 py-3 text-gray-600">{s.region_taller}</td>
                     <td className="px-4 py-3 text-gray-500">
                       {s.fecha_solicitud ? new Date(s.fecha_solicitud).toLocaleDateString('es-CL') : '—'}
+                    </td>
+                    <td className="px-4 py-3">
+                      <GestionadoToggle id={s.id} value={s.gestionado ?? false} />
                     </td>
                   </tr>
                 )
