@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import RepuestosTable from '@/components/RepuestosTable'
 
 const ESTADOS: Record<string, { label: string; color: string }> = {
   pendiente:  { label: 'Pendiente',  color: 'bg-yellow-100 text-yellow-800' },
@@ -65,36 +66,7 @@ export default async function SolicitudDetallePage({ params }: { params: Promise
         <div className="px-5 py-3 border-b border-gray-100">
           <h2 className="text-sm font-semibold text-gray-700">Repuestos ({repuestos?.length ?? 0})</h2>
         </div>
-        {!repuestos?.length ? (
-          <p className="text-center py-8 text-sm text-gray-400">Sin repuestos registrados</p>
-        ) : (
-          <table className="w-full text-sm">
-            <thead className="bg-gray-50 border-b border-gray-100">
-              <tr>
-                <th className="text-left px-4 py-2.5 font-medium text-gray-600">#</th>
-                <th className="text-left px-4 py-2.5 font-medium text-gray-600">Nombre</th>
-                <th className="text-left px-4 py-2.5 font-medium text-gray-600">Código</th>
-                <th className="text-left px-4 py-2.5 font-medium text-gray-600">N° Parte</th>
-                <th className="text-right px-4 py-2.5 font-medium text-gray-600">Precio</th>
-                <th className="text-left px-4 py-2.5 font-medium text-gray-600">Proveedor</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-50">
-              {repuestos.map(r => (
-                <tr key={r.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-2.5 text-gray-400">{r.numero_item}</td>
-                  <td className="px-4 py-2.5 text-gray-900">{r.nombre_es || r.nombre_en}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-gray-600">{r.codigo_original || '—'}</td>
-                  <td className="px-4 py-2.5 font-mono text-xs text-gray-600">{r.n_parte || '—'}</td>
-                  <td className="px-4 py-2.5 text-right text-gray-900">
-                    {r.precio_ofertado ? `$${Number(r.precio_ofertado).toLocaleString('es-CL')}` : '—'}
-                  </td>
-                  <td className="px-4 py-2.5 text-gray-600">{r.proveedor || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+        <RepuestosTable repuestos={repuestos ?? []} />
       </div>
     </div>
   )
